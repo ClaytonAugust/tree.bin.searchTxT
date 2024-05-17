@@ -164,7 +164,10 @@ int main() {
             case 2:
                 printf("Digite o RGM a remover: ");
                 scanf("%d", &RGM);
-                raiz = remover(raiz, RGM);
+
+                if (buscar(raiz, RGM) != NULL){
+                    printf("O RGM %d está presente na árvore.\n", RGM);
+                    raiz = remover(raiz, RGM);
 
                     printf("\n");
                  printf("Exibindo a árvore:\n");
@@ -183,6 +186,10 @@ int main() {
                          printf("\n");
                     printf("Exibindo a árvore graficamente:\n");
                         exibirArvoreGraficamente(raiz, 0);
+                }
+                else{
+                    printf("O RGM %d não está presente na árvore.\n", RGM);
+                }
                 break;
             case 3:
                 printf("Digite o RGM a pesquisar: ");
@@ -198,16 +205,21 @@ int main() {
                 printf("A árvore foi esvaziada.\n");
                 break;
             case 5:
-                printf("Exibindo a árvore:\n");
+                printf("\n");
+                 printf("Exibindo a árvore:\n");
+                  printf("\n");
                     printf("Pré-Ordem: ");
                         exibirPreOrdem(raiz);
                         printf("\n");
+                         printf("\n");
                     printf("In-Ordem: ");
                         exibirInOrdem(raiz);
                         printf("\n");
+                         printf("\n");
                     printf("Pós-Ordem: ");
                         exibirPosOrdem(raiz);
                         printf("\n");
+                         printf("\n");
                     printf("Exibindo a árvore graficamente:\n");
                         exibirArvoreGraficamente(raiz, 0);
                 break;
