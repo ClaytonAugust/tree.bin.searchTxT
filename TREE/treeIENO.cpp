@@ -154,6 +154,7 @@ int main() {
         printf("0 - SAIR\n");
         printf("Digite sua opção: ");
         scanf("%d", &opcao);
+        getchar(); // Consumir a nova linha deixada por scanf
 
         switch (opcao) {
             case 1:
