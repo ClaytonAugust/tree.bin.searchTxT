@@ -132,7 +132,7 @@ int main() {
     int opcao, RGM;
 
     // Abrir arquivo
-    arquivo = fopen("F:/minhafaculdade/Webapi/tree.bin.searchTxT/TREE/dados.txt", "r");
+    arquivo = fopen("dados.txt", "r");
     if (arquivo == NULL) {
         printf("Erro ao abrir o arquivo.\n");
         return 1;
