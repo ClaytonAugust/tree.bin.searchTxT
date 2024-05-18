@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <windows.h>
+#include <direct.h>
 
 typedef struct {
     int RGM;
@@ -125,11 +127,32 @@ void exibirArvoreGraficamente(No *raiz, int espaco) {
     exibirArvoreGraficamente(raiz->esquerda, espaco);
 }
 
+void mudarParaExeDiretorio(){
+    char path[MAX_PATH];
+
+    if(GetModuleFileName(NULL, path, MAX_PATH) == 0) {
+        perror("GetModuleFileName() erro");
+        exit(EXIT_FAILURE);
+    }
+
+    char *dir_end = strrchr(path, '\\');
+    if (dir_end != NULL) {
+        *dir_end = '\0';
+    }
+
+    if (_chdir(path) != 0) {
+        perror("_chdir() erro");
+        exit(EXIT_FAILURE);
+    }
+}
+
 int main() {
     No *raiz = NULL;
     FILE *arquivo;
     t_elemento elemento;
     int opcao, RGM;
+
+    mudarParaExeDiretorio();
 
     // Abrir arquivo
     arquivo = fopen("dados.txt", "r");
