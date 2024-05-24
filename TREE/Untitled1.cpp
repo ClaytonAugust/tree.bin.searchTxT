@@ -3,6 +3,7 @@
 #include <string.h>
 #include <windows.h>
 #include <direct.h>
+#include <locale.h>
 
 typedef struct {
     int RGM;
@@ -77,7 +78,7 @@ No *remover(No *raiz, int RGM) {
 
 void exibirPreOrdem(No *raiz) {
     if (raiz != NULL) {
-        printf("(%d, %s) ", raiz->dado.RGM, raiz->dado.nome);
+        printf("(RGM: %d, NOME: %s) ", raiz->dado.RGM, raiz->dado.nome);
         exibirPreOrdem(raiz->esquerda);
         exibirPreOrdem(raiz->direita);
     }
@@ -86,7 +87,7 @@ void exibirPreOrdem(No *raiz) {
 void exibirInOrdem(No *raiz) {
     if (raiz != NULL) {
         exibirInOrdem(raiz->esquerda);
-        printf("(%d, %s) ", raiz->dado.RGM, raiz->dado.nome);
+        printf("(RGM: %d, NOME: %s) ", raiz->dado.RGM, raiz->dado.nome);
         exibirInOrdem(raiz->direita);
     }
 }
@@ -95,7 +96,7 @@ void exibirPosOrdem(No *raiz) {
     if (raiz != NULL) {
         exibirPosOrdem(raiz->esquerda);
         exibirPosOrdem(raiz->direita);
-        printf("(%d, %s) ", raiz->dado.RGM, raiz->dado.nome);
+        printf("(RGM: %d, NOME: %s) ", raiz->dado.RGM, raiz->dado.nome);
     }
 }
 
@@ -106,25 +107,26 @@ void esvaziarArvore(No *raiz) {
         free(raiz);
     }
 }
+void gotoxy(int coluna, int linha){
+	COORD point;
+	point.X = coluna;
+	point.Y = linha;
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), point);
+}
+// FunÁ„o para exibir a ·rvore graficamente
+void exibirArvoreGraficamente(No *raiz, int col, int lin, int desloc) {
+	if(raiz == NULL)
+		return;
+	gotoxy(col,lin);
+	printf("(RGM: %d", raiz->dado.RGM);
+    gotoxy(col, lin + 1);
+	printf(", NOME: %s)", raiz->dado.nome);
 
-// Fun√ß√£o para exibir a √°rvore graficamente
-void exibirArvoreGraficamente(No *raiz, int espaco) {
-    if (raiz == NULL)
-        return;
+	if(raiz->esquerda != NULL)
+		exibirArvoreGraficamente(raiz->esquerda, col-desloc, lin+2, desloc/2+1);
 
-    espaco += 10;
-
-    // Exibir o n√≥ direito primeiro
-    exibirArvoreGraficamente(raiz->direita, espaco);
-
-    // Imprimir este n√≥
-    printf("\n");
-    for (int i = 10; i < espaco; i++)
-        printf(" ");
-    printf("%d, %s\n", raiz->dado.RGM, raiz->dado.nome);
-
-    // Exibir o n√≥ esquerdo
-    exibirArvoreGraficamente(raiz->esquerda, espaco);
+	if(raiz->direita != NULL)
+		exibirArvoreGraficamente(raiz->direita, col+desloc, lin+2, desloc/2+1);
 }
 
 void mudarParaExeDiretorio(){
@@ -147,10 +149,13 @@ void mudarParaExeDiretorio(){
 }
 
 int main() {
+	setlocale(LC_ALL, "Portuguese");
     No *raiz = NULL;
+    No *raizEstatica = NULL;
     FILE *arquivo;
     t_elemento elemento;
     int opcao, RGM;
+    int primeiroElementoInserido = 0;
 
     mudarParaExeDiretorio();
 
@@ -161,21 +166,26 @@ int main() {
         return 1;
     }
 
-    // Ler dados do arquivo e inserir na √°rvore
+    // Ler dados do arquivo e inserir na ·rvore
     while (fscanf(arquivo, "%d %[^\n]", &elemento.RGM, elemento.nome) != EOF) {
-        raiz = inserir(raiz, elemento);
+        if(!primeiroElementoInserido){
+            raizEstatica = criarNo(elemento);
+            primeiroElementoInserido = 1;
+        }else{
+            raiz = inserir(raiz, elemento);
+        }
     }
 
     // Menu
     do {
         printf("\nMENU:\n");
         printf("1 - INSERIR\n");
-        printf("2 - REMOVER UM N√ì\n");
+        printf("2 - REMOVER UM NÛ\n");
         printf("3 - PESQUISAR\n");
-        printf("4 - ESVAZIAR A √ÅRVORE\n");
-        printf("5 - EXIBIR A √ÅRVORE\n");
+        printf("4 - ESVAZIAR A ¡RVORE\n");
+        printf("5 - EXIBIR A ¡RVORE\n");
         printf("0 - SAIR\n");
-        printf("Digite sua op√ß√£o: ");
+        printf("Digite sua opÁ„o: ");
         scanf("%d", &opcao);
         getchar(); // Consumir a nova linha deixada por scanf
 
@@ -190,49 +200,49 @@ int main() {
                 scanf("%d", &RGM);
 
                 if (buscar(raiz, RGM) != NULL){
-                    printf("O RGM %d est√° presente na √°rvore.\n", RGM);
+                    printf("O RGM %d est· presente na ·rvore.\n", RGM);
                     raiz = remover(raiz, RGM);
 
                     printf("\n");
-                 printf("Exibindo a √°rvore:\n");
-                  printf("\n");
-                    printf("Pr√©-Ordem: ");
-                        exibirPreOrdem(raiz);
-                        printf("\n");
-                         printf("\n");
+                    printf("Exibindo a ·rvore:\n");
+                    printf("\n");
+                    printf("PrÈ-Ordem: ");
+                    exibirPreOrdem(raiz);
+                    printf("\n");
+                    printf("\n");
                     printf("In-Ordem: ");
-                        exibirInOrdem(raiz);
-                        printf("\n");
-                         printf("\n");
-                    printf("P√≥s-Ordem: ");
-                        exibirPosOrdem(raiz);
-                        printf("\n");
-                         printf("\n");
-                    printf("Exibindo a √°rvore graficamente:\n");
-                        exibirArvoreGraficamente(raiz, 0);
+                    exibirInOrdem(raiz);
+                    printf("\n");
+                    printf("\n");
+                    printf("PÛs-Ordem: ");
+                    exibirPosOrdem(raiz);
+                    printf("\n");
+                    printf("\n");
+                    printf("Exibindo a ·rvore graficamente:\n");
+                    exibirArvoreGraficamente(raiz, 50 , 20 , 15);
                 }
                 else{
-                    printf("O RGM %d n√£o est√° presente na √°rvore.\n", RGM);
+                    printf("O RGM %d n„o est· presente na ·rvore.\n", RGM);
                 }
                 break;
             case 3:
                 printf("Digite o RGM a pesquisar: ");
                 scanf("%d", &RGM);
                 if (buscar(raiz, RGM) != NULL)
-                    printf("O RGM %d est√° presente na √°rvore.\n", RGM);
+                    printf("O RGM %d est· presente na ·rvore.\n", RGM);
                 else
-                    printf("O RGM %d n√£o est√° presente na √°rvore.\n", RGM);
+                    printf("O RGM %d n„o est· presente na ·rvore.\n", RGM);
                 break;
             case 4:
                 esvaziarArvore(raiz);
                 raiz = NULL;
-                printf("A √°rvore foi esvaziada.\n");
+                printf("A ·rvore foi esvaziada.\n");
                 break;
             case 5:
                 printf("\n");
-                 printf("Exibindo a √°rvore:\n");
+                 printf("Exibindo a ·rvore:\n");
                   printf("\n");
-                    printf("Pr√©-Ordem: ");
+                    printf("PrÈ-Ordem: ");
                         exibirPreOrdem(raiz);
                         printf("\n");
                          printf("\n");
@@ -240,18 +250,18 @@ int main() {
                         exibirInOrdem(raiz);
                         printf("\n");
                          printf("\n");
-                    printf("P√≥s-Ordem: ");
+                    printf("PÛs-Ordem: ");
                         exibirPosOrdem(raiz);
                         printf("\n");
                          printf("\n");
-                    printf("Exibindo a √°rvore graficamente:\n");
-                        exibirArvoreGraficamente(raiz, 0);
+                    printf("Exibindo a ·rvore graficamente:\n");
+                        exibirArvoreGraficamente(raiz, 50 , 20 , 15);
                 break;
             case 0:
                 printf("Encerrando o programa.\n");
                 break;
             default:
-                printf("Op√ß√£o inv√°lida. Tente novamente.\n");
+                printf("OpÁ„o inv·lida. Tente novamente.\n");
         }
     } while (opcao != 0);
 
