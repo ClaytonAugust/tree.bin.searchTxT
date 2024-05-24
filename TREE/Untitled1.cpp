@@ -123,10 +123,10 @@ void exibirArvoreGraficamente(No *raiz, int col, int lin, int desloc) {
 	printf(", NOME: %s)", raiz->dado.nome);
 
 	if(raiz->esquerda != NULL)
-		exibirArvoreGraficamente(raiz->esquerda, col-desloc, lin+2, desloc/2+1);
+		exibirArvoreGraficamente(raiz->esquerda, col-desloc, lin+3, desloc/2+1);
 
 	if(raiz->direita != NULL)
-		exibirArvoreGraficamente(raiz->direita, col+desloc, lin+2, desloc/2+1);
+		exibirArvoreGraficamente(raiz->direita, col+desloc, lin+3, desloc/2+1);
 }
 
 void mudarParaExeDiretorio(){
@@ -255,7 +255,7 @@ int main() {
                         printf("\n");
                          printf("\n");
                     printf("Exibindo a árvore graficamente:\n");
-                        exibirArvoreGraficamente(raiz, 50 , 20 , 15);
+                        exibirArvoreGraficamente(raiz, 40 , 22 , 40);
                 break;
             case 0:
                 printf("Encerrando o programa.\n");

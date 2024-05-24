@@ -1,7 +1,7 @@
-123456 Clayton Augusto
-256878 Mateus Ieno
-987542 Mateus Gloria
-786941 Vitor Dias
-589521 Gabriel Gonzaga
+123456 Clayton
+256878 Ieno
+987542 Mateus
+786941 Vitor
+589521 Gabriel
 897421 Gustavo
 652133 Leonardo
