@@ -113,7 +113,17 @@ void gotoxy(int coluna, int linha){
 	point.Y = linha;
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), point);
 }
-// Função para exibir a árvore graficamente
+
+void limparArea(int col, int lin, int largura, int altura){
+	for (int i=0; i < altura; i++){
+		gotoxy(col, lin + 1);
+		for(int j = 0; j < largura; j++){
+			printf(" ");
+		}
+	}
+}
+
+// FunÃ§Ã£o para exibir a Ã¡rvore graficamente
 void exibirArvoreGraficamente(No *raiz, int col, int lin, int desloc) {
 	if(raiz == NULL)
 		return;
@@ -123,10 +133,10 @@ void exibirArvoreGraficamente(No *raiz, int col, int lin, int desloc) {
 	printf(", NOME: %s)", raiz->dado.nome);
 
 	if(raiz->esquerda != NULL)
-		exibirArvoreGraficamente(raiz->esquerda, col-desloc, lin+3, desloc/2+1);
+		exibirArvoreGraficamente(raiz->esquerda, col-desloc, lin+4, desloc/2+1);
 
 	if(raiz->direita != NULL)
-		exibirArvoreGraficamente(raiz->direita, col+desloc, lin+3, desloc/2+1);
+		exibirArvoreGraficamente(raiz->direita, col+desloc, lin+4, desloc/2+1);
 }
 
 void mudarParaExeDiretorio(){
@@ -166,18 +176,14 @@ int main() {
         return 1;
     }
 
-    // Ler dados do arquivo e inserir na árvore
+    // Ler dados do arquivo e inserir na Ã¡rvore
     while (fscanf(arquivo, "%d %[^\n]", &elemento.RGM, elemento.nome) != EOF) {
-        if(!primeiroElementoInserido){
-            raizEstatica = criarNo(elemento);
-            primeiroElementoInserido = 1;
-        }else{
-            raiz = inserir(raiz, elemento);
-        }
+        raiz = inserir(raiz, elemento);
     }
 
     // Menu
     do {
+    	limparArea(0, 0, 80, 30);
         printf("\nMENU:\n");
         printf("1 - INSERIR\n");
         printf("2 - REMOVER UM Nó\n");
@@ -187,39 +193,44 @@ int main() {
         printf("0 - SAIR\n");
         printf("Digite sua opção: ");
         scanf("%d", &opcao);
-        getchar(); // Consumir a nova linha deixada por scanf
+        getchar();
 
         switch (opcao) {
             case 1:
                 printf("Digite o RGM e o Nome do aluno: ");
                 scanf("%d %[^\n]", &elemento.RGM, elemento.nome);
+                getchar();
                 raiz = inserir(raiz, elemento);
                 break;
             case 2:
                 printf("Digite o RGM a remover: ");
                 scanf("%d", &RGM);
+                getchar();
 
                 if (buscar(raiz, RGM) != NULL){
-                    printf("O RGM %d está presente na árvore.\n", RGM);
+                    printf("O RGM %d está presente na árvore e foi removido.\n", RGM);
                     raiz = remover(raiz, RGM);
 
-                    printf("\n");
-                    printf("Exibindo a árvore:\n");
-                    printf("\n");
-                    printf("Pré-Ordem: ");
-                    exibirPreOrdem(raiz);
-                    printf("\n");
-                    printf("\n");
-                    printf("In-Ordem: ");
-                    exibirInOrdem(raiz);
-                    printf("\n");
-                    printf("\n");
-                    printf("Pós-Ordem: ");
-                    exibirPosOrdem(raiz);
-                    printf("\n");
-                    printf("\n");
-                    printf("Exibindo a árvore graficamente:\n");
-                    exibirArvoreGraficamente(raiz, 50 , 20 , 15);
+                    limparArea(0, 10, 80, 10);
+            		limparArea(0, 20, 80, 10);
+            	
+                	printf("Exibindo a árvore:\n");
+                
+                	printf("Pré-Ordem: ");
+                	exibirPreOrdem(raiz);
+                	printf("\n");
+                
+                	printf("In-Ordem: ");
+            		exibirInOrdem(raiz);
+                	printf("\n");
+                
+                	printf("Pós-Ordem: ");
+                	exibirPosOrdem(raiz);
+                	printf("\n");
+                
+					printf("Exibindo a árvore graficamente:\n");
+                	exibirArvoreGraficamente(raiz, 50 , 30 , 30);
+                	printf("\n");
                 }
                 else{
                     printf("O RGM %d não está presente na árvore.\n", RGM);
@@ -228,6 +239,8 @@ int main() {
             case 3:
                 printf("Digite o RGM a pesquisar: ");
                 scanf("%d", &RGM);
+                getchar();
+                
                 if (buscar(raiz, RGM) != NULL)
                     printf("O RGM %d está presente na árvore.\n", RGM);
                 else
@@ -239,23 +252,26 @@ int main() {
                 printf("A árvore foi esvaziada.\n");
                 break;
             case 5:
+            	limparArea(0, 10, 80, 10);
+            	limparArea(0, 20, 80, 10);
+            	
+                printf("Exibindo a árvore:\n");
+                
+                printf("Pré-Ordem: ");
+                exibirPreOrdem(raiz);
                 printf("\n");
-                 printf("Exibindo a árvore:\n");
-                  printf("\n");
-                    printf("Pré-Ordem: ");
-                        exibirPreOrdem(raiz);
-                        printf("\n");
-                         printf("\n");
-                    printf("In-Ordem: ");
-                        exibirInOrdem(raiz);
-                        printf("\n");
-                         printf("\n");
-                    printf("Pós-Ordem: ");
-                        exibirPosOrdem(raiz);
-                        printf("\n");
-                         printf("\n");
-                    printf("Exibindo a árvore graficamente:\n");
-                        exibirArvoreGraficamente(raiz, 40 , 22 , 40);
+                
+                printf("In-Ordem: ");
+            	exibirInOrdem(raiz);
+                printf("\n");
+                
+                printf("Pós-Ordem: ");
+                exibirPosOrdem(raiz);
+                printf("\n");
+                
+				printf("Exibindo a árvore graficamente:\n");
+                exibirArvoreGraficamente(raiz, 50 , 30 , 30);
+                printf("\n");
                 break;
             case 0:
                 printf("Encerrando o programa.\n");
