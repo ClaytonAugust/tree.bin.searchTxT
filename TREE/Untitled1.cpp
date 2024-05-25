@@ -113,7 +113,7 @@ void gotoxy(int coluna, int linha){
 	point.Y = linha;
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), point);
 }
-// FunÁ„o para exibir a ·rvore graficamente
+// Fun√ß√£o para exibir a √°rvore graficamente
 void exibirArvoreGraficamente(No *raiz, int col, int lin, int desloc) {
 	if(raiz == NULL)
 		return;
@@ -166,26 +166,21 @@ int main() {
         return 1;
     }
 
-    // Ler dados do arquivo e inserir na ·rvore
+    // Ler dados do arquivo e inserir na √°rvore
     while (fscanf(arquivo, "%d %[^\n]", &elemento.RGM, elemento.nome) != EOF) {
-        if(!primeiroElementoInserido){
-            raizEstatica = criarNo(elemento);
-            primeiroElementoInserido = 1;
-        }else{
-            raiz = inserir(raiz, elemento);
-        }
+        raiz = inserir(raiz, elemento);
     }
 
     // Menu
     do {
         printf("\nMENU:\n");
         printf("1 - INSERIR\n");
-        printf("2 - REMOVER UM NÛ\n");
+        printf("2 - REMOVER UM N√≥\n");
         printf("3 - PESQUISAR\n");
-        printf("4 - ESVAZIAR A ¡RVORE\n");
-        printf("5 - EXIBIR A ¡RVORE\n");
+        printf("4 - ESVAZIAR A √ÅRVORE\n");
+        printf("5 - EXIBIR A √ÅRVORE\n");
         printf("0 - SAIR\n");
-        printf("Digite sua opÁ„o: ");
+        printf("Digite sua op√ß√£o: ");
         scanf("%d", &opcao);
         getchar(); // Consumir a nova linha deixada por scanf
 
@@ -200,13 +195,13 @@ int main() {
                 scanf("%d", &RGM);
 
                 if (buscar(raiz, RGM) != NULL){
-                    printf("O RGM %d est· presente na ·rvore.\n", RGM);
+                    printf("O RGM %d est√° presente na √°rvore.\n", RGM);
                     raiz = remover(raiz, RGM);
 
                     printf("\n");
-                    printf("Exibindo a ·rvore:\n");
+                    printf("Exibindo a √°rvore:\n");
                     printf("\n");
-                    printf("PrÈ-Ordem: ");
+                    printf("Pr√©-Ordem: ");
                     exibirPreOrdem(raiz);
                     printf("\n");
                     printf("\n");
@@ -214,35 +209,35 @@ int main() {
                     exibirInOrdem(raiz);
                     printf("\n");
                     printf("\n");
-                    printf("PÛs-Ordem: ");
+                    printf("P√≥s-Ordem: ");
                     exibirPosOrdem(raiz);
                     printf("\n");
                     printf("\n");
-                    printf("Exibindo a ·rvore graficamente:\n");
+                    printf("Exibindo a √°rvore graficamente:\n");
                     exibirArvoreGraficamente(raiz, 50 , 20 , 15);
                 }
                 else{
-                    printf("O RGM %d n„o est· presente na ·rvore.\n", RGM);
+                    printf("O RGM %d n√£o est√° presente na √°rvore.\n", RGM);
                 }
                 break;
             case 3:
                 printf("Digite o RGM a pesquisar: ");
                 scanf("%d", &RGM);
                 if (buscar(raiz, RGM) != NULL)
-                    printf("O RGM %d est· presente na ·rvore.\n", RGM);
+                    printf("O RGM %d est√° presente na √°rvore.\n", RGM);
                 else
-                    printf("O RGM %d n„o est· presente na ·rvore.\n", RGM);
+                    printf("O RGM %d n√£o est√° presente na √°rvore.\n", RGM);
                 break;
             case 4:
                 esvaziarArvore(raiz);
                 raiz = NULL;
-                printf("A ·rvore foi esvaziada.\n");
+                printf("A √°rvore foi esvaziada.\n");
                 break;
             case 5:
                 printf("\n");
-                 printf("Exibindo a ·rvore:\n");
+                 printf("Exibindo a √°rvore:\n");
                   printf("\n");
-                    printf("PrÈ-Ordem: ");
+                    printf("Pr√©-Ordem: ");
                         exibirPreOrdem(raiz);
                         printf("\n");
                          printf("\n");
@@ -250,18 +245,18 @@ int main() {
                         exibirInOrdem(raiz);
                         printf("\n");
                          printf("\n");
-                    printf("PÛs-Ordem: ");
+                    printf("P√≥s-Ordem: ");
                         exibirPosOrdem(raiz);
                         printf("\n");
                          printf("\n");
-                    printf("Exibindo a ·rvore graficamente:\n");
+                    printf("Exibindo a √°rvore graficamente:\n");
                         exibirArvoreGraficamente(raiz, 40 , 22 , 40);
                 break;
             case 0:
                 printf("Encerrando o programa.\n");
                 break;
             default:
-                printf("OpÁ„o inv·lida. Tente novamente.\n");
+                printf("Op√ß√£o inv√°lida. Tente novamente.\n");
         }
     } while (opcao != 0);
 
