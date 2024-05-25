@@ -114,14 +114,10 @@ void gotoxy(int coluna, int linha){
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), point);
 }
 
-void limparArea(int col, int lin, int largura, int altura){
-	for (int i=0; i < altura; i++){
-		gotoxy(col, lin + 1);
-		for(int j = 0; j < largura; j++){
-			printf(" ");
-		}
-	}
+void limparTerminal() {
+    system("cls || clear");
 }
+
 
 // FunÃ§Ã£o para exibir a Ã¡rvore graficamente
 void exibirArvoreGraficamente(No *raiz, int col, int lin, int desloc) {
@@ -183,7 +179,6 @@ int main() {
 
     // Menu
     do {
-    	limparArea(0, 0, 80, 30);
         printf("\nMENU:\n");
         printf("1 - INSERIR\n");
         printf("2 - REMOVER UM Nó\n");
@@ -197,12 +192,15 @@ int main() {
 
         switch (opcao) {
             case 1:
+            	limparTerminal();
                 printf("Digite o RGM e o Nome do aluno: ");
                 scanf("%d %[^\n]", &elemento.RGM, elemento.nome);
                 getchar();
                 raiz = inserir(raiz, elemento);
+                printf("O aluno com RGM %d foi inserido com sucesso!\n", elemento.RGM);
                 break;
             case 2:
+            	limparTerminal();
                 printf("Digite o RGM a remover: ");
                 scanf("%d", &RGM);
                 getchar();
@@ -210,9 +208,6 @@ int main() {
                 if (buscar(raiz, RGM) != NULL){
                     printf("O RGM %d está presente na árvore e foi removido.\n", RGM);
                     raiz = remover(raiz, RGM);
-
-                    limparArea(0, 10, 80, 10);
-            		limparArea(0, 20, 80, 10);
             	
                 	printf("Exibindo a árvore:\n");
                 
@@ -229,7 +224,7 @@ int main() {
                 	printf("\n");
                 
 					printf("Exibindo a árvore graficamente:\n");
-                	exibirArvoreGraficamente(raiz, 50 , 30 , 30);
+                	exibirArvoreGraficamente(raiz, 50 , 10 , 35);
                 	printf("\n");
                 }
                 else{
@@ -237,14 +232,18 @@ int main() {
                 }
                 break;
             case 3:
+            	
                 printf("Digite o RGM a pesquisar: ");
                 scanf("%d", &RGM);
                 getchar();
                 
                 if (buscar(raiz, RGM) != NULL)
                     printf("O RGM %d está presente na árvore.\n", RGM);
-                else
-                    printf("O RGM %d não está presente na árvore.\n", RGM);
+                else{
+                	printf("O RGM %d não está presente na árvore.\n", RGM);
+				}
+                while (getchar() != '\n');
+                	limparTerminal();
                 break;
             case 4:
                 esvaziarArvore(raiz);
@@ -252,9 +251,7 @@ int main() {
                 printf("A árvore foi esvaziada.\n");
                 break;
             case 5:
-            	limparArea(0, 10, 80, 10);
-            	limparArea(0, 20, 80, 10);
-            	
+            	limparTerminal();
                 printf("Exibindo a árvore:\n");
                 
                 printf("Pré-Ordem: ");
@@ -270,7 +267,7 @@ int main() {
                 printf("\n");
                 
 				printf("Exibindo a árvore graficamente:\n");
-                exibirArvoreGraficamente(raiz, 50 , 30 , 30);
+                exibirArvoreGraficamente(raiz, 50 , 10 , 35);
                 printf("\n");
                 break;
             case 0:
