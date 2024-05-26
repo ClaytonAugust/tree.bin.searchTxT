@@ -16,6 +16,10 @@ typedef struct No {
     struct No *direita;
 } No;
 
+/*pega os dados do elemento na estrutura de variaveis e
+  se esquerda e direita estivar nulo, vai criar um novo
+  nó com a alocação dinamica de memoria do tamanho do no*/
+  
 No *criarNo(t_elemento dado) {
     No *novoNo = (No *)malloc(sizeof(No));
     novoNo->dado = dado;
@@ -23,6 +27,11 @@ No *criarNo(t_elemento dado) {
     novoNo->direita = NULL;
     return novoNo;
 }
+
+/*Pega o dado.RGM e compara se for menor que a raiz e raiz aponta
+  para dado.rgm para também ser comparado ele passa para a esquerda.
+  se dado.RGM for maior que raiz aponta para dado.RGM vai passar
+  para a direita*/
 
 No *inserir(No *raiz, t_elemento dado) {
     if (raiz == NULL)
@@ -36,6 +45,10 @@ No *inserir(No *raiz, t_elemento dado) {
     return raiz;
 }
 
+/*Ele vai procurar pelo RGM se existe ou não e depois ele vai buscar se raiz aponta
+  para dado.RGM for menor que o RGM que o usuário inseriu ele vai buscar para a direita
+  senão vai buscar para o que estiver na esquerda, fazendo esse "loop" até encontrar o RGM*/
+
 No *buscar(No *raiz, int RGM) {
     if (raiz == NULL || raiz->dado.RGM == RGM)
         return raiz;
@@ -46,36 +59,48 @@ No *buscar(No *raiz, int RGM) {
     return buscar(raiz->esquerda, RGM);
 }
 
+/*Função para remover, ele faz a comparação se a raiz estiver vazia ele retornará null,
+  vai percorrer recursivamente  se o RGM a ser removido é menor que o RGM da raiz ele
+  chama remover recursivamente na subárvore esquerda, se o RGM for maior que o RGM da raiz
+  chama remover recursivamente na subárvore direita, ao ser encontrado o RGM e se caso coincide
+   com o RGM da raiz, lida com os três casos possíveis */
+
 No *remover(No *raiz, int RGM) {
+	//Caso árvore está vazia
     if (raiz == NULL)
         return raiz;
-
+	//percorrer a árvore recursivamente
     if (RGM < raiz->dado.RGM)
+    	//RGM está na subárvore esquerda
         raiz->esquerda = remover(raiz->esquerda, RGM);
     else if (RGM > raiz->dado.RGM)
+    	//O RGM está na subárvore direita
         raiz->direita = remover(raiz->direita, RGM);
-    else {
+    else {//no com um único filho ou sem
+    
+    	// se o filho esquerdo é nulo retonar filho direito
         if (raiz->esquerda == NULL) {
             No *temp = raiz->direita;
             free(raiz);
             return temp;
+        //se o filho direito é nulo retorna filho esquerdo
         } else if (raiz->direita == NULL) {
             No *temp = raiz->esquerda;
             free(raiz);
             return temp;
         }
-
+		//(Nó com dois filhos) Encontra o sucessor em ordem o menor nó na subárvore direita
         No *temp = raiz->direita;
         while (temp->esquerda != NULL)
             temp = temp->esquerda;
-
+		//substitui os dados do nó pelos dados do sucessor em ordem
         raiz->dado = temp->dado;
-
+		//Remove o sucessor em ordem
         raiz->direita = remover(raiz->direita, temp->dado.RGM);
     }
     return raiz;
 }
-
+//funções para exibir nós tres tipos os dados armazenados na arvore
 void exibirPreOrdem(No *raiz) {
     if (raiz != NULL) {
         printf("(RGM: %d, NOME: %s) ", raiz->dado.RGM, raiz->dado.nome);
@@ -99,7 +124,7 @@ void exibirPosOrdem(No *raiz) {
         printf("(RGM: %d, NOME: %s) ", raiz->dado.RGM, raiz->dado.nome);
     }
 }
-
+//função para limpar toda a arvore
 void esvaziarArvore(No *raiz) {
     if (raiz != NULL) {
         esvaziarArvore(raiz->esquerda);
@@ -107,6 +132,7 @@ void esvaziarArvore(No *raiz) {
         free(raiz);
     }
 }
+// função para mover o cursor para linha e coluna
 void gotoxy(int coluna, int linha){
 	COORD point;
 	point.X = coluna;
@@ -114,12 +140,15 @@ void gotoxy(int coluna, int linha){
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), point);
 }
 
+/* função usada para limpar terminal para que não ocorra
+   problemas de exibição para o cliente*/
+   
 void limparTerminal() {
     system("cls || clear");
 }
 
 
-// FunÃ§Ã£o para exibir a Ã¡rvore graficamente
+// Função para exibir a árvore graficamente
 void exibirArvoreGraficamente(No *raiz, int col, int lin, int desloc) {
 	if(raiz == NULL)
 		return;
@@ -127,27 +156,30 @@ void exibirArvoreGraficamente(No *raiz, int col, int lin, int desloc) {
 	printf("(RGM: %d", raiz->dado.RGM);
     gotoxy(col, lin + 1);
 	printf(", NOME: %s)", raiz->dado.nome);
-
+	
 	if(raiz->esquerda != NULL)
+		//cada inserção vai ser deslocado 4 linhas
 		exibirArvoreGraficamente(raiz->esquerda, col-desloc, lin+4, desloc/2+1);
 
 	if(raiz->direita != NULL)
 		exibirArvoreGraficamente(raiz->direita, col+desloc, lin+4, desloc/2+1);
 }
-
+/*Essa função ela vai alterar o diretorio de trabalho atual do programa
+ para o diretorio onde o executavel do programa esta localizado*/
 void mudarParaExeDiretorio(){
-    char path[MAX_PATH];
-
+    char path[MAX_PATH];//armazenamento completo do caminho do .exe
+    
+	//Obtém o caminho do exe
     if(GetModuleFileName(NULL, path, MAX_PATH) == 0) {
         perror("GetModuleFileName() erro");
         exit(EXIT_FAILURE);
     }
-
+	//encontrando o diretorio do exe
     char *dir_end = strrchr(path, '\\');
     if (dir_end != NULL) {
         *dir_end = '\0';
     }
-
+	//mudar para o diretorio do exe
     if (_chdir(path) != 0) {
         perror("_chdir() erro");
         exit(EXIT_FAILURE);
@@ -172,7 +204,7 @@ int main() {
         return 1;
     }
 
-    // Ler dados do arquivo e inserir na Ã¡rvore
+    // Ler dados do arquivo e inserir na árvore
     while (fscanf(arquivo, "%d %[^\n]", &elemento.RGM, elemento.nome) != EOF) {
         raiz = inserir(raiz, elemento);
     }
@@ -238,9 +270,9 @@ int main() {
                 getchar();
                 
                 if (buscar(raiz, RGM) != NULL)
-                    printf("O RGM %d está presente na árvore.\n", RGM);
+                    printf("O RGM %d está presente na árvore, aperta enter para continuar.\n", RGM);
                 else{
-                	printf("O RGM %d não está presente na árvore.\n", RGM);
+                	printf("O RGM %d não está presente na árvore, aperta enter para continuar.\n", RGM);
 				}
                 while (getchar() != '\n');
                 	limparTerminal();
