@@ -18,7 +18,7 @@ typedef struct No {
 
 /*pega os dados do elemento na estrutura de variaveis e
   se esquerda e direita estivar nulo, vai criar um novo
-  nó com a alocação dinamica de memoria do tamanho do no*/
+  nï¿½ com a alocaï¿½ï¿½o dinamica de memoria do tamanho do no*/
   
 No *criarNo(t_elemento dado) {
     No *novoNo = (No *)malloc(sizeof(No));
@@ -29,7 +29,7 @@ No *criarNo(t_elemento dado) {
 }
 
 /*Pega o dado.RGM e compara se for menor que a raiz e raiz aponta
-  para dado.rgm para também ser comparado ele passa para a esquerda.
+  para dado.rgm para tambï¿½m ser comparado ele passa para a esquerda.
   se dado.RGM for maior que raiz aponta para dado.RGM vai passar
   para a direita*/
 
@@ -45,9 +45,9 @@ No *inserir(No *raiz, t_elemento dado) {
     return raiz;
 }
 
-/*Ele vai procurar pelo RGM se existe ou não e depois ele vai buscar se raiz aponta
-  para dado.RGM for menor que o RGM que o usuário inseriu ele vai buscar para a direita
-  senão vai buscar para o que estiver na esquerda, fazendo esse "loop" até encontrar o RGM*/
+/*Ele vai procurar pelo RGM se existe ou nï¿½o e depois ele vai buscar se raiz aponta
+  para dado.RGM for menor que o RGM que o usuï¿½rio inseriu ele vai buscar para a direita
+  senï¿½o vai buscar para o que estiver na esquerda, fazendo esse "loop" atï¿½ encontrar o RGM*/
 
 No *buscar(No *raiz, int RGM) {
     if (raiz == NULL || raiz->dado.RGM == RGM)
@@ -59,48 +59,48 @@ No *buscar(No *raiz, int RGM) {
     return buscar(raiz->esquerda, RGM);
 }
 
-/*Função para remover, ele faz a comparação se a raiz estiver vazia ele retornará null,
-  vai percorrer recursivamente  se o RGM a ser removido é menor que o RGM da raiz ele
-  chama remover recursivamente na subárvore esquerda, se o RGM for maior que o RGM da raiz
-  chama remover recursivamente na subárvore direita, ao ser encontrado o RGM e se caso coincide
-   com o RGM da raiz, lida com os três casos possíveis */
+/*Funï¿½ï¿½o para remover, ele faz a comparaï¿½ï¿½o se a raiz estiver vazia ele retornarï¿½ null,
+  vai percorrer recursivamente  se o RGM a ser removido ï¿½ menor que o RGM da raiz ele
+  chama remover recursivamente na subï¿½rvore esquerda, se o RGM for maior que o RGM da raiz
+  chama remover recursivamente na subï¿½rvore direita, ao ser encontrado o RGM e se caso coincide
+   com o RGM da raiz, lida com os trï¿½s casos possï¿½veis */
 
 No *remover(No *raiz, int RGM) {
-	//Caso árvore está vazia
+	//Caso ï¿½rvore estï¿½ vazia
     if (raiz == NULL)
         return raiz;
-	//percorrer a árvore recursivamente
+	//percorrer a ï¿½rvore recursivamente
     if (RGM < raiz->dado.RGM)
-    	//RGM está na subárvore esquerda
+    	//RGM estï¿½ na subï¿½rvore esquerda
         raiz->esquerda = remover(raiz->esquerda, RGM);
     else if (RGM > raiz->dado.RGM)
-    	//O RGM está na subárvore direita
+    	//O RGM estï¿½ na subï¿½rvore direita
         raiz->direita = remover(raiz->direita, RGM);
-    else {//no com um único filho ou sem
+    else {//no com um ï¿½nico filho ou sem
     
-    	// se o filho esquerdo é nulo retonar filho direito
+    	// se o filho esquerdo ï¿½ nulo retonar filho direito
         if (raiz->esquerda == NULL) {
             No *temp = raiz->direita;
             free(raiz);
             return temp;
-        //se o filho direito é nulo retorna filho esquerdo
+        //se o filho direito ï¿½ nulo retorna filho esquerdo
         } else if (raiz->direita == NULL) {
             No *temp = raiz->esquerda;
             free(raiz);
             return temp;
         }
-		//(Nó com dois filhos) Encontra o sucessor em ordem o menor nó na subárvore direita
+		//(Nï¿½ com dois filhos) Encontra o sucessor em ordem o menor nï¿½ na subï¿½rvore direita
         No *temp = raiz->direita;
         while (temp->esquerda != NULL)
             temp = temp->esquerda;
-		//substitui os dados do nó pelos dados do sucessor em ordem
+		//substitui os dados do nï¿½ pelos dados do sucessor em ordem
         raiz->dado = temp->dado;
 		//Remove o sucessor em ordem
         raiz->direita = remover(raiz->direita, temp->dado.RGM);
     }
     return raiz;
 }
-//funções para exibir nós tres tipos os dados armazenados na arvore
+//funï¿½ï¿½es para exibir nï¿½s tres tipos os dados armazenados na arvore
 void exibirPreOrdem(No *raiz) {
     if (raiz != NULL) {
         printf("(RGM: %d, NOME: %s) ", raiz->dado.RGM, raiz->dado.nome);
@@ -124,7 +124,7 @@ void exibirPosOrdem(No *raiz) {
         printf("(RGM: %d, NOME: %s) ", raiz->dado.RGM, raiz->dado.nome);
     }
 }
-//função para limpar toda a arvore
+//funï¿½ï¿½o para limpar toda a arvore
 void esvaziarArvore(No *raiz) {
     if (raiz != NULL) {
         esvaziarArvore(raiz->esquerda);
@@ -132,7 +132,7 @@ void esvaziarArvore(No *raiz) {
         free(raiz);
     }
 }
-// função para mover o cursor para linha e coluna
+// funï¿½ï¿½o para mover o cursor para linha e coluna
 void gotoxy(int coluna, int linha){
 	COORD point;
 	point.X = coluna;
@@ -140,15 +140,15 @@ void gotoxy(int coluna, int linha){
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), point);
 }
 
-/* função usada para limpar terminal para que não ocorra
-   problemas de exibição para o cliente*/
+/* funï¿½ï¿½o usada para limpar terminal para que nï¿½o ocorra
+   problemas de exibiï¿½ï¿½o para o cliente*/
    
 void limparTerminal() {
     system("cls || clear");
 }
 
 
-// Função para exibir a árvore graficamente
+// Funï¿½ï¿½o para exibir a ï¿½rvore graficamente
 void exibirArvoreGraficamente(No *raiz, int col, int lin, int desloc) {
 	if(raiz == NULL)
 		return;
@@ -158,18 +158,18 @@ void exibirArvoreGraficamente(No *raiz, int col, int lin, int desloc) {
 	printf(", NOME: %s)", raiz->dado.nome);
 	
 	if(raiz->esquerda != NULL)
-		//cada inserção vai ser deslocado 4 linhas
+		//cada inserï¿½ï¿½o vai ser deslocado 4 linhas
 		exibirArvoreGraficamente(raiz->esquerda, col-desloc, lin+4, desloc/2+1);
 
 	if(raiz->direita != NULL)
 		exibirArvoreGraficamente(raiz->direita, col+desloc, lin+4, desloc/2+1);
 }
-/*Essa função ela vai alterar o diretorio de trabalho atual do programa
+/*Essa funï¿½ï¿½o ela vai alterar o diretorio de trabalho atual do programa
  para o diretorio onde o executavel do programa esta localizado*/
 void mudarParaExeDiretorio(){
     char path[MAX_PATH];//armazenamento completo do caminho do .exe
     
-	//Obtém o caminho do exe
+	//Obtï¿½m o caminho do exe
     if(GetModuleFileName(NULL, path, MAX_PATH) == 0) {
         perror("GetModuleFileName() erro");
         exit(EXIT_FAILURE);
@@ -204,7 +204,7 @@ int main() {
         return 1;
     }
 
-    // Ler dados do arquivo e inserir na árvore
+    // Ler dados do arquivo e inserir na ï¿½rvore
     while (fscanf(arquivo, "%d %[^\n]", &elemento.RGM, elemento.nome) != EOF) {
         raiz = inserir(raiz, elemento);
     }
@@ -213,12 +213,12 @@ int main() {
     do {
         printf("\nMENU:\n");
         printf("1 - INSERIR\n");
-        printf("2 - REMOVER UM Nó\n");
+        printf("2 - REMOVER UM Nï¿½\n");
         printf("3 - PESQUISAR\n");
-        printf("4 - ESVAZIAR A ÁRVORE\n");
-        printf("5 - EXIBIR A ÁRVORE\n");
+        printf("4 - ESVAZIAR A ï¿½RVORE\n");
+        printf("5 - EXIBIR A ï¿½RVORE\n");
         printf("0 - SAIR\n");
-        printf("Digite sua opção: ");
+        printf("Digite sua opï¿½ï¿½o: ");
         scanf("%d", &opcao);
         getchar();
 
@@ -238,12 +238,12 @@ int main() {
                 getchar();
 
                 if (buscar(raiz, RGM) != NULL){
-                    printf("O RGM %d está presente na árvore e foi removido.\n", RGM);
+                    printf("O RGM %d estï¿½ presente na ï¿½rvore e foi removido.\n", RGM);
                     raiz = remover(raiz, RGM);
             	
-                	printf("Exibindo a árvore:\n");
+                	printf("Exibindo a ï¿½rvore:\n");
                 
-                	printf("Pré-Ordem: ");
+                	printf("Prï¿½-Ordem: ");
                 	exibirPreOrdem(raiz);
                 	printf("\n");
                 
@@ -251,16 +251,16 @@ int main() {
             		exibirInOrdem(raiz);
                 	printf("\n");
                 
-                	printf("Pós-Ordem: ");
+                	printf("Pï¿½s-Ordem: ");
                 	exibirPosOrdem(raiz);
                 	printf("\n");
                 
-					printf("Exibindo a árvore graficamente:\n");
+					printf("Exibindo a ï¿½rvore graficamente:\n");
                 	exibirArvoreGraficamente(raiz, 50 , 10 , 35);
                 	printf("\n");
                 }
                 else{
-                    printf("O RGM %d não está presente na árvore.\n", RGM);
+                    printf("O RGM %d nï¿½o estï¿½ presente na ï¿½rvore.\n", RGM);
                 }
                 break;
             case 3:
@@ -270,9 +270,9 @@ int main() {
                 getchar();
                 
                 if (buscar(raiz, RGM) != NULL)
-                    printf("O RGM %d está presente na árvore, aperta enter para continuar.\n", RGM);
+                    printf("O RGM %d estï¿½ presente na ï¿½rvore, aperta enter para continuar.\n", RGM);
                 else{
-                	printf("O RGM %d não está presente na árvore, aperta enter para continuar.\n", RGM);
+                	printf("O RGM %d nï¿½o estï¿½ presente na ï¿½rvore, aperta enter para continuar.\n", RGM);
 				}
                 while (getchar() != '\n');
                 	limparTerminal();
@@ -280,13 +280,13 @@ int main() {
             case 4:
                 esvaziarArvore(raiz);
                 raiz = NULL;
-                printf("A árvore foi esvaziada.\n");
+                printf("A ï¿½rvore foi esvaziada.\n");
                 break;
             case 5:
             	limparTerminal();
-                printf("Exibindo a árvore:\n");
+                printf("Exibindo a ï¿½rvore:\n");
                 
-                printf("Pré-Ordem: ");
+                printf("Prï¿½-Ordem: ");
                 exibirPreOrdem(raiz);
                 printf("\n");
                 
@@ -294,11 +294,11 @@ int main() {
             	exibirInOrdem(raiz);
                 printf("\n");
                 
-                printf("Pós-Ordem: ");
+                printf("Pï¿½s-Ordem: ");
                 exibirPosOrdem(raiz);
                 printf("\n");
                 
-				printf("Exibindo a árvore graficamente:\n");
+				printf("Exibindo a ï¿½rvore graficamente:\n");
                 exibirArvoreGraficamente(raiz, 50 , 10 , 35);
                 printf("\n");
                 break;
@@ -306,7 +306,7 @@ int main() {
                 printf("Encerrando o programa.\n");
                 break;
             default:
-                printf("Opção inválida. Tente novamente.\n");
+                printf("Opï¿½ï¿½o invï¿½lida. Tente novamente.\n");
         }
     } while (opcao != 0);
 
